@@ -30,7 +30,6 @@ var pigLatin = function(word) {
       }
 
       if (counter === 0) {
-        consonantsArray.push(wordArray[j]);
         ++totalConsonants;
       } else {
         break;
@@ -39,7 +38,7 @@ var pigLatin = function(word) {
 
     var consonants = wordArray.slice(0, totalConsonants);
     var vowels = wordArray.slice(totalConsonants, wordArray.length);
-    return vowels.concat(consonants).concat("ay").join("");
+    return vowels.concat(consonants).concat("ay").join("").replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
   }
 };
 
@@ -48,7 +47,21 @@ var pigLatinSentence = function(sentence) {
   var splitSentence = sentence.split(" ");
 
   for(var i = 0; i < splitSentence.length; ++i) {
-    
+    sentenceArray.push(pigLatin(splitSentence[i]));
   }
 
+  return sentenceArray.join(" ");
+
 };
+
+$(function() {
+  $("form#pigLatin").submit(function(event) {
+    var sentence = $("input#input").val();
+    var result = pigLatinSentence(sentence);
+
+    $(".output").text(result);
+
+    $("#result").show();
+    event.preventDefault();
+  });
+});
